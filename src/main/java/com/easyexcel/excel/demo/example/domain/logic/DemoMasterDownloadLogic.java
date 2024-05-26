@@ -1,54 +1,47 @@
 package com.easyexcel.excel.demo.example.domain.logic;
 
+import com.easyexcel.excel.demo.common.domain.enums.DownloadType;
 import com.easyexcel.excel.demo.common.domain.logic.AbstractDownloadLogic;
 import com.easyexcel.excel.demo.common.domain.model.DownloadParams;
-import com.easyexcel.excel.demo.example.domain.convert.DemoDownloadConvert;
-import com.easyexcel.excel.demo.example.domain.convert.DemoDynamicHeaderDownloadConvert;
-import com.easyexcel.excel.demo.example.domain.dto.DemoDownloadDto;
-import com.easyexcel.excel.demo.common.domain.enums.DownloadType;
-import com.easyexcel.excel.demo.example.domain.dto.DemoDynamicHeaderDownloadDto;
+import com.easyexcel.excel.demo.example.domain.convert.DemoMasterDownloadConvert;
+import com.easyexcel.excel.demo.example.domain.convert.DemoSlaveDownloadConvert;
+import com.easyexcel.excel.demo.example.domain.dto.DemoMasterDownloadDto;
+import com.easyexcel.excel.demo.example.domain.dto.DemoSlaveDownloadDto;
 import com.easyexcel.excel.demo.infrastructure.ExcelWriterContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.easyexcel.excel.demo.infrastructure.utils.ExcelUtil.getDynamicHeaders;
-
 @Component
 @RequiredArgsConstructor
-public class DemoDownloadLogic extends AbstractDownloadLogic {
-
-    private final DemoDownloadConvert demoDownloadConvert;
-    private final DemoDynamicHeaderDownloadConvert demoDynamicHeaderDownloadConvert;
-    private static final String SHEET_NAME = "Demo Download Sheet Name";
+public class DemoMasterDownloadLogic extends AbstractDownloadLogic {
+    private final DemoMasterDownloadConvert masterDownloadConvert;
+    private final DemoSlaveDownloadConvert slaveDownloadConvert;
 
     @Override
     public boolean isSupport(DownloadParams params) {
-        return DownloadType.DEMO_DOWNLOAD_TYPE == params.getDownloadType();
+        return DownloadType.DEMO_MASTER_DOWNLOAD_TYPE == params.getDownloadType();
     }
 
     @Override
     public String getFileName() {
-        return "Demo Test File.xlsx";
+        return "Demo Master Test File.xlsx";
     }
 
     @Override
     protected List<ExcelWriterContext> getWriterContexts() {
-        var demoDynamicHeaderContext = ExcelWriterContext.builder()
-                .itemClass(DemoDynamicHeaderDownloadDto.class)
-                .converter(demoDynamicHeaderDownloadConvert)
-                .dynamicHeaders(getDynamicHeaders(DemoDynamicHeaderDownloadDto.class))
+        var masterContext = ExcelWriterContext.builder()
+                .itemClass(DemoMasterDownloadDto.class)
+                .blankRows(1)
+                .converter(masterDownloadConvert)
                 .build();
 
-        var demoContext = ExcelWriterContext.builder()
-                .sheetName(SHEET_NAME)
-                .converter(demoDownloadConvert)
-                .itemClass(DemoDownloadDto.class)
-                .dynamicHeaders(getDynamicHeaders(DemoDownloadDto.class))
+        var slaveContext = ExcelWriterContext.builder()
+                .converter(slaveDownloadConvert)
+                .itemClass(DemoSlaveDownloadDto.class)
                 .build();
 
-
-        return List.of(demoContext, demoDynamicHeaderContext);
+        return List.of(masterContext, slaveContext);
     }
 }

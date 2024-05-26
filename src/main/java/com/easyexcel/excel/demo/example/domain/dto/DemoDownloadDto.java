@@ -1,4 +1,14 @@
-package com.easyexcel.excel.demo.common.domain.dto;
+package com.easyexcel.excel.demo.example.domain.dto;
 
-public class DomoDownloadDto {
+import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class DemoDownloadDto {
+    @ExcelProperty("Demo Name")
+    private final String demoName;
+    @ExcelProperty("Demo Status")
+    private final String demoStatus;
 }

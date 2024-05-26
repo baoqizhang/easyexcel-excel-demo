@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DemoDownloadApplication extends AbstractDownloadApplication {
+public class DemoMasterDownloadApplication extends AbstractDownloadApplication {
     @Override
     public boolean isSupport(DownloadType downloadType) {
-        return downloadType == DownloadType.DEMO_DOWNLOAD_TYPE;
+        return downloadType == DownloadType.DEMO_MASTER_DOWNLOAD_TYPE;
     }
 }

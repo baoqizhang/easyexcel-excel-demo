@@ -1,4 +1,4 @@
-package com.sephora.nbp.common.download.domain.excel.style;
+package com.easyexcel.excel.demo.infrastructure;
 
 import com.alibaba.excel.write.handler.context.CellWriteHandlerContext;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;

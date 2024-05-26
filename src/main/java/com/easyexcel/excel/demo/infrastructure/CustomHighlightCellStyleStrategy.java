@@ -1,4 +1,4 @@
-package com.sephora.nbp.common.download.domain.excel.style;
+package com.easyexcel.excel.demo.infrastructure;
 
 import com.alibaba.excel.write.handler.context.CellWriteHandlerContext;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 
 public class CustomHighlightCellStyleStrategy extends AbstractCellStyleStrategy {

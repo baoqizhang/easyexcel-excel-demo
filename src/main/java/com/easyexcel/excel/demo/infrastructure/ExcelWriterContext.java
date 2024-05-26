@@ -1,7 +1,7 @@
 package com.easyexcel.excel.demo.infrastructure;
 
 import com.alibaba.excel.write.handler.WriteHandler;
-import com.easyexcel.excel.demo.domain.convert.ExcelRowConverterV2;
+import com.easyexcel.excel.demo.common.domain.convert.ExcelRowConverter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,14 +13,14 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class ExcelWriterContextV2 {
+public class ExcelWriterContext {
 
     @Nullable
     private String sheetName;
     private Class<?> itemClass;
     private List<String> dynamicHeaders;
     @NonNull
-    private ExcelRowConverterV2<?> converter;
+    private ExcelRowConverter<?> converter;
     @Nullable
     private Object masterHeaderArgument;
     @Nullable

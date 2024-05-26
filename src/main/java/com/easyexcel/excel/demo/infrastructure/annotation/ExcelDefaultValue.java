@@ -1,12 +1,6 @@
-package com.sephora.nbp.common.download.domain.excel.annotation;
+package com.easyexcel.excel.demo.infrastructure.annotation;
 
-import com.sephora.nbp.infrastructure.enums.WorkflowType;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -14,6 +8,5 @@ import java.lang.annotation.Target;
 public @interface ExcelDefaultValue {
     String value();
 
-    WorkflowType[] workflowTypes() default WorkflowType.ALL;
 }
 

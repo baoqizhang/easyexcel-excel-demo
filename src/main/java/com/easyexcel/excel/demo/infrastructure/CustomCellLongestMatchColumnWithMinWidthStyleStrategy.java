@@ -1,4 +1,4 @@
-package com.sephora.nbp.common.download.domain.excel.style;
+package com.easyexcel.excel.demo.infrastructure;
 
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.Head;
@@ -6,11 +6,12 @@ import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.util.MapUtils;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.poi.ss.usermodel.Cell;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.ss.usermodel.Cell;
 
 public class CustomCellLongestMatchColumnWithMinWidthStyleStrategy extends LongestMatchColumnWidthStyleStrategy {
 

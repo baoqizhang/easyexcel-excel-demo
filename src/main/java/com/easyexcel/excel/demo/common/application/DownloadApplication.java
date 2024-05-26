@@ -1,16 +1,14 @@
-package com.sephora.nbp.common.download.application.appservice;
+package com.easyexcel.excel.demo.common.application;
 
-import com.sephora.nbp.engine.domain.model.RequestFormModel;
-import com.sephora.nbp.infrastructure.enums.WorkflowClassify;
-import com.sephora.nbp.infrastructure.model.User;
+import com.easyexcel.excel.demo.common.domain.enums.DownloadType;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+
+import java.io.IOException;
 
 public interface DownloadApplication {
 
-    boolean isSupport(@NonNull WorkflowClassify classify);
+    boolean isSupport(@NonNull DownloadType downloadType);
 
-    void downloadRequestsSkus(@NonNull List<RequestFormModel> requestIds, @NonNull User user, @NonNull String materialType,
-        @NonNull String timezoneId, @NonNull HttpServletResponse response);
+    void download(DownloadType type, @NonNull HttpServletResponse response) throws IOException;
 }

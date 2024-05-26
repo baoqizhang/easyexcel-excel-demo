@@ -1,4 +1,4 @@
-package com.sephora.nbp.common.download.domain.excel.style;
+package com.easyexcel.excel.demo.infrastructure;
 
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.Head;
@@ -6,9 +6,9 @@ import com.alibaba.excel.metadata.data.CellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.style.column.AbstractColumnWidthStyleStrategy;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,10 +1,6 @@
-package com.sephora.nbp.common.download.domain.excel.annotation;
+package com.easyexcel.excel.demo.infrastructure.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 下载被 recall 单子的 excel 时，如果字段与 recall 之前相比发生了变化，则会高亮发生变化的字段.

@@ -1,36 +1,29 @@
-package com.sephora.nbp.common.download.application.appservice;
+package com.easyexcel.excel.demo.common.application;
 
-import static java.util.stream.Collectors.toList;
-
-import com.sephora.nbp.engine.interfaces.api.IRequestFormService;
-import com.sephora.nbp.infrastructure.enums.WorkflowClassify;
-import com.sephora.nbp.infrastructure.exception.GenericBizException;
-import com.sephora.nbp.infrastructure.interfaces.IUserProvider;
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+import com.easyexcel.excel.demo.common.domain.enums.DownloadType;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
 public class DownloadApplicationComposite {
 
     private final List<DownloadApplication> applications;
-    private final IUserProvider userProvider;
-    private final IRequestFormService requestFormService;
 
-    public void downloadRequestsSkus(List<Long> requestIds, WorkflowClassify type, String materialType,
-        String timezoneId, HttpServletResponse response) {
-        var user = userProvider.getUser();
-        var requests = requestFormService.findAllByRequestFormIds(requestIds.stream().distinct().collect(toList()));
+    public void download(DownloadType type, HttpServletResponse response) throws IOException {
         var downloadApplication = findAvailableDownloadApplication(type);
-        downloadApplication.downloadRequestsSkus(requests, user, materialType, timezoneId, response);
+        downloadApplication.download(type, response);
     }
 
-    private DownloadApplication findAvailableDownloadApplication(WorkflowClassify classify) {
+    private DownloadApplication findAvailableDownloadApplication(DownloadType type) {
         return applications.stream()
-            .filter(it -> it.isSupport(classify))
-            .findFirst()
-            .orElseThrow(() -> new GenericBizException(classify + " download application not implemented."));
+                .filter(it -> it.isSupport(type))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException(type + " download application not implemented."));
     }
 }

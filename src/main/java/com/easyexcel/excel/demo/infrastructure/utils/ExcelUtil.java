@@ -1,35 +1,26 @@
-package com.sephora.nbp.common.download.domain.excel;
-
-import static com.sephora.nbp.infrastructure.component.SpringApplicationContext.getStaticBean;
+package com.easyexcel.excel.demo.infrastructure.utils;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.util.StringUtils;
 import com.alibaba.excel.write.handler.WriteHandler;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.sephora.nbp.common.download.domain.excel.annotation.DynamicExcelProperty;
-import com.sephora.nbp.common.download.domain.excel.annotation.ExcelDefaultValue;
-import com.sephora.nbp.common.download.domain.excel.style.CustomCellColumnWidthStrategy;
-import com.sephora.nbp.common.download.domain.excel.style.CustomCellStyleStrategy;
-import com.sephora.nbp.common.download.domain.excel.style.CustomHighlightCellStyleStrategy;
-import com.sephora.nbp.infrastructure.enums.WorkflowType;
-import com.sephora.nbp.infrastructure.utils.ObjectUtil;
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import org.apache.commons.lang3.StringUtils;
+import com.easyexcel.excel.demo.infrastructure.ExcelSheetData;
+import com.easyexcel.excel.demo.infrastructure.annotation.DynamicExcelProperty;
+import com.easyexcel.excel.demo.infrastructure.annotation.ExcelDefaultValue;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.easyexcel.excel.demo.infrastructure.component.SpringApplicationContext.getStaticBean;
 
 public class ExcelUtil {
 
@@ -45,24 +36,7 @@ public class ExcelUtil {
     }
 
     @SuppressWarnings("rawtypes")
-    public static void writeExcel(ExcelWriter writer, List<ExcelSheetData> dataList) {
-        if (dataList == null) {
-            return;
-        }
-        for (int i = 0; i < dataList.size(); i++) {
-            ExcelSheetData excelSheetData = dataList.get(i);
-
-            WriteSheet sheet = EasyExcelFactory.writerSheet(i)
-                .sheetName(excelSheetData.getSheetName())
-                .head(excelSheetData.getItemClass())
-                .build();
-            writer.write(excelSheetData.getItems(), sheet);
-        }
-        writer.finish();
-    }
-
-    @SuppressWarnings("rawtypes")
-    public static void writeExcelV2(ExcelWriter writer, List<ExcelSheetDataV2> dataList) {
+    public static void writeExcelV2(ExcelWriter writer, List<ExcelSheetData> dataList) {
         if (dataList == null) {
             return;
         }
@@ -71,18 +45,18 @@ public class ExcelUtil {
     }
 
     @SuppressWarnings("rawtypes")
-    public static File generateExcelFile(String fileName, List<ExcelSheetDataV2> dataList) {
+    public static File generateExcelFile(String fileName, List<ExcelSheetData> dataList) {
         var file = new File(fileName);
         var writer = EasyExcelFactory.write(file)
             .excelType(ExcelTypeEnum.XLSX)
-            .registerWriteHandler(new CustomCellColumnWidthStrategy())
-            .registerWriteHandler(new CustomCellStyleStrategy())
+//            .registerWriteHandler(new CustomCellColumnWidthStrategy())
+//            .registerWriteHandler(new CustomCellStyleStrategy())
             .build();
         writeExcelV2(writer, dataList);
         return file;
     }
 
-    public static <T> T setDefaultValue(T item, WorkflowType workflowType) {
+    public static <T> T setDefaultValue(T item) {
         if (Objects.isNull(item)) {
             return null;
         }
@@ -93,21 +67,18 @@ public class ExcelUtil {
             if (excelDefaultValue == null) {
                 continue;
             }
-            if (Arrays.stream(excelDefaultValue.workflowTypes())
-                .anyMatch(type -> type.equals(workflowType) || type.equals(WorkflowType.ALL))) {
 
                 Object value = ReflectionUtils.getField(field, item);
                 String stringValue = (String) value;
                 if (StringUtils.isBlank(stringValue)) {
                     ReflectionUtils.setField(field, item, excelDefaultValue.value());
                 }
-            }
         }
         return item;
     }
 
     @SuppressWarnings("rawtypes")
-    public static ExcelWriter writeExcelForZip(ExcelWriter writer, List<ExcelSheetDataV2> dataList) {
+    public static ExcelWriter writeExcelForZip(ExcelWriter writer, List<ExcelSheetData> dataList) {
         if (dataList == null) {
             return null;
         }
@@ -116,7 +87,7 @@ public class ExcelUtil {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static void writeDataToExcel(ExcelWriter writer, List<ExcelSheetDataV2> dataList) {
+    private static void writeDataToExcel(ExcelWriter writer, List<ExcelSheetData> dataList) {
         for (int i = 0; i < dataList.size(); i++) {
             final var data = dataList.get(i);
             final var sheetName = data.getSheetName();
@@ -139,7 +110,7 @@ public class ExcelUtil {
             if (!CollectionUtils.isEmpty(data.getWriteHandlers())) {
                 data.getWriteHandlers().forEach(it -> tableBuilder.registerWriteHandler((WriteHandler) it));
             }
-            tableBuilder.registerWriteHandler(new CustomHighlightCellStyleStrategy(data.getHighlightCells())).build();
+//            tableBuilder.registerWriteHandler(new CustomHighlightCellStyleStrategy(data.getHighlightCells())).build();
             final var writingData = new ArrayList<>(
                 isDynamicHeaders && data.getItemClass() != null ? data.getDynamicHeaderData() : data.getItems());
             IntStream.range(0, data.getBlankRows()).forEach(c -> writingData.add(List.of()));

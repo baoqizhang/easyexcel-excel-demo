@@ -1,22 +1,19 @@
-package com.easyexcel.excel.demo.domain.logic;
+package com.easyexcel.excel.demo.common.domain.logic;
 
-import com.alibaba.excel.ExcelWriter;
-import com.easyexcel.excel.demo.domain.model.DownloadParams;
-import org.apache.poi.ss.formula.functions.T;
+import com.easyexcel.excel.demo.common.domain.model.DownloadParams;
 import org.springframework.lang.NonNull;
 
-import java.io.File;
 import java.io.OutputStream;
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public interface DownloadLogic<T> {
     boolean isSupport(@NonNull DownloadParams params);
 
-    void handleForGenerateExcel(List<T> items, OutputStream outputStream);
+    void handleForGenerateExcel(OutputStream outputStream);
 
     void afterDownload(List<T> items);
+
+    String getFileName();
 
     static DownloadLogic findAvailableDownloadLogic(List<DownloadLogic> downloadLogics,
                                                     DownloadParams params) {

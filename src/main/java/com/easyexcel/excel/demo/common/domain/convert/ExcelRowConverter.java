@@ -1,4 +1,4 @@
-package com.easyexcel.excel.demo.domain.convert;
+package com.easyexcel.excel.demo.common.domain.convert;
 
 
 import com.easyexcel.excel.demo.infrastructure.CustomHighlightCellStyleStrategy.HighlightCell;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 
-public interface ExcelRowConverterV2<T> {
+public interface ExcelRowConverter<T> {
 
     List<T> convertToExcelRowDto();
 
